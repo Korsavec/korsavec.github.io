@@ -2,9 +2,41 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Hello</title>
+    <title>Xrp wallet generator</title>
+
 </head>
 <body>
-Hello world!
+
+
+
+<h1>Xrp wallet generator</h1>
+
+
+<div><h3>classicAddress</h3><p id="classicAddress"></p></div>
+
+<br>
+<div><h3>privateKey</h3><p id="privateKey"></p></div>
+
+<br>
+<div><h3>publicKey</h3><p id="publicKey"></p></div>
+
+<br>
+<div><h3>seed</h3><p id="seed"></p></div>
+
+
+
+
+<script src="https://unpkg.com/xrpl@2.0.0/build/xrpl-latest-min.js"></script>
+
+<script>
+    const wallet = xrpl.Wallet.generate();
+    console.log(wallet);
+    document.getElementById("classicAddress").innerHTML = wallet.address;
+    document.getElementById("privateKey").innerHTML = wallet.privateKey;
+    document.getElementById("publicKey").innerHTML = wallet.publicKey;
+    document.getElementById("seed").innerHTML = wallet.seed;
+</script>
+
+
 </body>
 </html>
