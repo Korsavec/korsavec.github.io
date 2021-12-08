@@ -1,1 +1,1 @@
-Readme
+Xrp wallet generator
