@@ -3,14 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Xrp wallet generator</title>
-
 </head>
 <body>
 
-
-
 <h1>Xrp wallet generator</h1>
-
 
 <div><h3>classicAddress</h3><p id="classicAddress"></p></div>
 
@@ -25,28 +21,59 @@
 
 <button onclick="generateXrpWallet()">Generate new xrp wallet</button>
 
+<br><br><br>
+
+<label for="wallet">
+    <input type="text" id="wallet">
+</label>
+
+<button onclick="walletInfo()">Get wallet information</button>
+
+<br><br>
+<div><h3>XRP wallet balance: </h3><p id="infoWallet"></p></div>
 
 <script src="xrpl-latest-min.js"></script>
 
 <script>
+
     const wallet = xrpl.Wallet.generate();
     document.getElementById("classicAddress").innerHTML = wallet.address;
     document.getElementById("privateKey").innerHTML = wallet.privateKey;
     document.getElementById("publicKey").innerHTML = wallet.publicKey;
     document.getElementById("seed").innerHTML = wallet.seed;
-    
+
     function generateXrpWallet() {
 
         const wallet = xrpl.Wallet.generate();
-        console.log(wallet);
         document.getElementById("classicAddress").innerHTML = wallet.address;
         document.getElementById("privateKey").innerHTML = wallet.privateKey;
         document.getElementById("publicKey").innerHTML = wallet.publicKey;
         document.getElementById("seed").innerHTML = wallet.seed;
     }
-    
-</script>
 
+    async function walletInfo() {
+
+        // Define the network client
+        const client = new xrpl.Client("wss://xrpl.ws")
+        await client.connect()
+
+        const wallet = document.getElementById("wallet").value;
+
+        // Get info from the ledger about the address we just funded
+        const response = await client.request({
+            "command": "account_info",
+            "account": wallet,
+            "ledger_index": "validated"
+        })
+
+        document.getElementById("infoWallet").innerHTML = response.result.account_data.Balance;
+
+        // Disconnect when done (If you omit this, Node.js won't end the process)
+        client.disconnect()
+
+    }
+
+</script>
 
 </body>
 </html>
